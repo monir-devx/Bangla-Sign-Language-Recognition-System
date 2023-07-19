@@ -39,7 +39,12 @@ class Calculator:
                             for i in range(len(big)):
                                 if big[i] > small[i]:
                                     id += str(i)
-                            self.k[self.idset.index(id)] += 1
+
+                            try:
+                                ind = self.idset.index(id)
+                            except ValueError:
+                                ind = 0
+                            self.k[ind] += 1
 
                             for i in range(len(self.k)):
                                 if self.k[i] > 20:
