@@ -63,6 +63,8 @@ class Calculator:
             else:
                 self.text = " "
 
+            cv2.namedWindow("WebCam", cv2.WINDOW_NORMAL)
+            cv2.resizeWindow("WebCam", 700, 700)
             cv2.imshow("WebCam", imgg)
             cv2.waitKey(1)
 
