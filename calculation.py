@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+from keys import *
 
 class Calculator:
     def __init__(self):
@@ -14,12 +15,28 @@ class Calculator:
         self.idset = ["", "1", "12", "123", "1234", "01234", "0", "01", "012", "0123", "04", "4", "34", "014", "14", "234"]
         self.op = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "-", "*", "/"]
 
-    def process_frame(self):
+        # copied from main.py to ensure same frame-size & show button
+        self.calculationKey = Key(50, 5, 300, 50, '1.Calculation')
+        # getting frame's height and width
+        self.frameHeight, self.frameWidth, _ = self.cam.read()[1].shape
+        self.calculationKey.x = int(self.frameWidth * .73) - 150
+
+    def calculation_frame(self):
         while True:
             success, img = self.cam.read()
+
+            # copied from main.py to ensure same frame-size
+            if not success:
+                break
+            img = cv2.resize(img, (int(self.frameWidth * 1.5), int(self.frameHeight * 1.5)))
+
             imgg = cv2.flip(img, 1)
             imgRGB = cv2.cvtColor(imgg, cv2.COLOR_BGR2RGB)
             results = self.hands.process(imgRGB)
+
+            # copied from main.py to show button
+            self.calculationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
+            self.calculationKey.text = "1.Calculation Activated"
 
             if results.multi_hand_landmarks:
                 for handLms in results.multi_hand_landmarks:
@@ -63,7 +80,5 @@ class Calculator:
             else:
                 self.text = " "
 
-            cv2.namedWindow("WebCam", cv2.WINDOW_NORMAL)
-            cv2.resizeWindow("WebCam", 700, 700)
             cv2.imshow("WebCam", imgg)
             cv2.waitKey(1)
