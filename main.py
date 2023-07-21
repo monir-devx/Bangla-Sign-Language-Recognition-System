@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+import calculation as cal
 
 class Calculator:
     def __init__(self):
@@ -67,3 +68,7 @@ class Calculator:
             cv2.resizeWindow("WebCam", 700, 700)
             cv2.imshow("WebCam", imgg)
             cv2.waitKey(1)
+
+if __name__ == "__main__":
+    calculator = cal.Calculator()
+    calculator.process_frame()
