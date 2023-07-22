@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 from keys import *
+import main as ma
 
 class Calculator:
     def __init__(self):
@@ -11,15 +12,17 @@ class Calculator:
         self.x = []
         self.y = []
         self.text = ""
-        self.k = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self.idset = ["", "1", "12", "123", "1234", "01234", "0", "01", "012", "0123", "04", "4", "34", "014", "14", "234"]
+        self.k = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0]
+        self.idset = ["", "1", "12", "123", "1234", "01234", "0", "01", "012", "0123", "04", "4", "34", "014", "14", "234", "3"]
         self.op = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "-", "*", "/"]
 
         # copied from main.py to ensure same frame-size & show button
         self.calculationKey = Key(50, 5, 300, 50, '1.Calculation')
+        self.backKey = Key(150, 5, 150, 50, '3.Back')  # To add "back" button
         # getting frame's height and width
         self.frameHeight, self.frameWidth, _ = self.cam.read()[1].shape
         self.calculationKey.x = int(self.frameWidth * .73) - 150
+        self.backKey.x = int(self.frameWidth * 1.4) - 150  # To add "back" button
 
     def calculation_frame(self):
         while True:
@@ -37,6 +40,9 @@ class Calculator:
             # copied from main.py to show button
             self.calculationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
             self.calculationKey.text = "1.Calculation Activated"
+            # To add "back" button
+            self.backKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
+            self.backKey.text = "3.Back"
 
             if results.multi_hand_landmarks:
                 for handLms in results.multi_hand_landmarks:
@@ -70,6 +76,9 @@ class Calculator:
                                         self.text = self.text + " = " + ans
                                         for i in range(len(self.k)):
                                             self.k[i] = 0
+                                    elif i == 16:
+                                        main = ma.Main()
+                                        main.process_frame()
                                     else:
                                         self.text += self.op[i]
                                         for i in range(len(self.k)):
