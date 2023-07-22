@@ -13,12 +13,12 @@ class Calculator:
         self.y = []
         self.text = ""
         self.k = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0]
-        self.idset = ["", "1", "12", "123", "1234", "01234", "0", "01", "012", "0123", "04", "4", "34", "014", "14", "234", "3"]
+        self.idset = ["", "1", "12", "123", "1234", "01234", "0", "01", "012", "0123", "04", "124", "134", "014", "14", "234", "4"]
         self.op = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "-", "*", "/"]
 
         # copied from main.py to ensure same frame-size & show button
         self.calculationKey = Key(50, 5, 300, 50, '1.Calculation')
-        self.backKey = Key(150, 5, 150, 50, '3.Back')  # To add "back" button
+        self.backKey = Key(150, 5, 150, 50, '4.Back')  # To add "back" button
         # getting frame's height and width
         self.frameHeight, self.frameWidth, _ = self.cam.read()[1].shape
         self.calculationKey.x = int(self.frameWidth * .73) - 150
@@ -38,11 +38,11 @@ class Calculator:
             results = self.hands.process(imgRGB)
 
             # copied from main.py to show button
-            self.calculationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
+            self.calculationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
             self.calculationKey.text = "1.Calculation Activated"
             # To add "back" button
-            self.backKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
-            self.backKey.text = "3.Back"
+            self.backKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
+            self.backKey.text = "4.Back"
 
             if results.multi_hand_landmarks:
                 for handLms in results.multi_hand_landmarks:

@@ -14,7 +14,7 @@ class Main:
         self.y = []
         self.text = ""
         self.k = [0, 0, 0, 0]
-        self.idset = ["", "1", "12","234"]
+        self.idset = ["", "1", "12","123"]
         self.op = ["", "1", "2"]
 
         # Creating keys
@@ -23,12 +23,14 @@ class Main:
 
         self.calculationKey = Key(50, 5, 300, 50, '1.Calculation')
         self.communicationKey = Key(50, 70, 300, 50, '2.Communication')
+        self.exitKey = Key(150, 5, 150, 50, '3.Exit')  # To add "3.Exit" button
         self.textBox = Key(self.startX, self.startY - self.h - 5, 10 * self.w + 9 * 5, self.h, '')
 
         # getting frame's height and width
         self.frameHeight, self.frameWidth, _ = self.cam.read()[1].shape
         self.calculationKey.x = int(self.frameWidth * .73) - 150
         self.communicationKey.x = int(self.frameWidth * .73) - 150
+        self.exitKey.x = int(self.frameWidth * 1.4) - 150  # To add "3.Exit" button
         # print(showKey.x)
 
         self.calculation = False
@@ -47,8 +49,11 @@ class Main:
             imgRGB = cv2.cvtColor(imgg, cv2.COLOR_BGR2RGB)
             results = self.hands.process(imgRGB)
 
-            self.calculationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
-            self.communicationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
+            self.calculationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
+            self.communicationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
+            # To add "3.Exit" button
+            self.exitKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
+            self.exitKey.text = "3.Exit"
 
             if results.multi_hand_landmarks:
                 for handLms in results.multi_hand_landmarks:
@@ -83,6 +88,8 @@ class Main:
                                     elif i == 2:
                                         communicator = com.Communicator()
                                         communicator.communication_frame()
+                                    elif i == 3:
+                                        exit()
                                     else:
                                         self.text += self.op[i]
                                         for i in range(len(self.k)):
@@ -94,6 +101,7 @@ class Main:
 
             cv2.imshow("WebCam", imgg)
             cv2.waitKey(1)
+
 
 if __name__ == "__main__":
     main = Main()

@@ -14,12 +14,12 @@ class Communicator:
         self.y = []
         self.text = ""
         self.k = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self.idset = ["","1234","014", "234", "01234", "1", "3"]
+        self.idset = ["","1234","014", "234", "01234", "1", "4"]
         self.op = ["","আস-সালামু আলাইকুম","আিম েতামােক ভােলাবািস","ভােলা হেয়েছ"," েকমন আেছন ?","তুিম কী করেতেছা ?"]
 
         # copied from main.py to ensure same frame-size & show button
         self.communicationKey = Key(50, 5, 300, 50, '2.Communication')
-        self.backKey = Key(150, 5, 150, 50, '3.Back')  # To add "back" button
+        self.backKey = Key(150, 5, 150, 50, '4.Back')  # To add "back" button
         # getting frame's height and width
         self.frameHeight, self.frameWidth, _ = self.cam.read()[1].shape
         self.communicationKey.x = int(self.frameWidth * .73) - 150
@@ -39,11 +39,11 @@ class Communicator:
             results = self.hands.process(imgRGB)
 
             # copied from main.py to show button
-            self.communicationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
+            self.communicationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
             self.communicationKey.text = "2.communication Activated"
             # To add "back" button
-            self.backKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
-            self.backKey.text = "3.Back"
+            self.backKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
+            self.backKey.text = "4.Back"
 
             if results.multi_hand_landmarks:
                 for handLms in results.multi_hand_landmarks:
