@@ -2,6 +2,8 @@ import cv2
 import mediapipe as mp
 from keys import *
 import calculation as cal
+import communication as com
+
 class Main:
     def __init__(self):
         self.mpHands = mp.solutions.hands
@@ -78,14 +80,14 @@ class Main:
                                     if i == 1:
                                         calculator = cal.Calculator()
                                         calculator.calculation_frame()
-                                    #elif i == 2:
-                                        # here, code for communication.py
+                                    elif i == 2:
+                                        communicator = com.Communicator()
+                                        communicator.communication_frame()
                                     else:
                                         self.text += self.op[i]
                                         for i in range(len(self.k)):
                                             self.k[i] = 0
 
-                    cv2.putText(imgg, self.text, (100, 120), cv2.FONT_HERSHEY_TRIPLEX, 2, (255, 0, 0), 3)
                     self.mpDraw.draw_landmarks(imgg, handLms, self.mpHands.HAND_CONNECTIONS)
             else:
                 self.text = " "

@@ -1,8 +1,9 @@
 import cv2
 import mediapipe as mp
 from keys import *
+from PIL import ImageFont, ImageDraw, Image
 
-class Calculator:
+class Communicator:
     def __init__(self):
         self.mpHands = mp.solutions.hands
         self.hands = self.mpHands.Hands()
@@ -12,16 +13,16 @@ class Calculator:
         self.y = []
         self.text = ""
         self.k = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self.idset = ["", "1", "12", "123", "1234", "01234", "0", "01", "012", "0123", "04", "4", "34", "014", "14", "234"]
-        self.op = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "-", "*", "/"]
+        self.idset = ["","1234","014"]
+        self.op = ["","আস-সালামু আলাইকুম","আিম েতামােক ভােলাবািস"]
 
         # copied from main.py to ensure same frame-size & show button
-        self.calculationKey = Key(50, 5, 300, 50, '1.Calculation')
+        self.communicationKey = Key(50, 5, 300, 50, '2.Communication')
         # getting frame's height and width
         self.frameHeight, self.frameWidth, _ = self.cam.read()[1].shape
-        self.calculationKey.x = int(self.frameWidth * .73) - 150
+        self.communicationKey.x = int(self.frameWidth * .73) - 150
 
-    def calculation_frame(self):
+    def communication_frame(self):
         while True:
             success, img = self.cam.read()
 
@@ -35,8 +36,8 @@ class Calculator:
             results = self.hands.process(imgRGB)
 
             # copied from main.py to show button
-            self.calculationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
-            self.calculationKey.text = "1.Calculation Activated"
+            self.communicationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.5)
+            self.communicationKey.text = "2.communication Activated"
 
             if results.multi_hand_landmarks:
                 for handLms in results.multi_hand_landmarks:
@@ -65,17 +66,16 @@ class Calculator:
 
                             for i in range(len(self.k)):
                                 if self.k[i] > 20:
-                                    if i == 15:
-                                        ans = str(eval(self.text))
-                                        self.text = self.text + " = " + ans
-                                        for i in range(len(self.k)):
-                                            self.k[i] = 0
-                                    else:
-                                        self.text += self.op[i]
+                                        self.text = self.op[i]
                                         for i in range(len(self.k)):
                                             self.k[i] = 0
 
-                    cv2.putText(imgg, self.text, (100, 120), cv2.FONT_HERSHEY_TRIPLEX, 2, (255, 0, 0), 3)
+                    fontpath = "fonts/Kalpurush-Regular.ttf"
+                    font = ImageFont.truetype(fontpath, 42)
+                    img_pil = Image.fromarray(imgg)
+                    draw = ImageDraw.Draw(img_pil)
+                    draw.text((100, 100), self.text, font=font, fill=(0, 0, 255, 0))
+                    imgg = np.array(img_pil)
                     self.mpDraw.draw_landmarks(imgg, handLms, self.mpHands.HAND_CONNECTIONS)
             else:
                 self.text = " "
