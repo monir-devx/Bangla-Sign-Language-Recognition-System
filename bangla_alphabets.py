@@ -14,7 +14,7 @@ class bangla_al:
         self.y = []
         self.text = ""
         self.k = [0, 0, 0, 0]
-        self.idset = ["", "1", "12","123"]
+        self.idset = ["", "1", "12","4"]
         self.op = ["", "1", "2"]
 
         # Creating keys
