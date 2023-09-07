@@ -1,12 +1,10 @@
 import cv2
 import mediapipe as mp
 from keys import *
-import calculation as cal
-import communication as com
-import bangla_alphabets as banal
+import main as ma
+import bangla_vowels as ban
 
-
-class Main:
+class bangla_al:
     def __init__(self):
         self.mpHands = mp.solutions.hands
         self.hands = self.mpHands.Hands()
@@ -16,27 +14,25 @@ class Main:
         self.y = []
         self.text = ""
         self.k = [0, 0, 0, 0]
-        self.idset = ["", "1", "12","123", "4"]
-        self.op = ["", "1", "2", "3"]
+        self.idset = ["", "1", "12","123"]
+        self.op = ["", "1", "2"]
 
         # Creating keys
         self.w, self.h = 80, 60
         self.startX, self.startY = 40, 200
 
-        self.calculationKey = Key(50, 5, 300, 50, '1.Calculation')
-        self.communicationKey = Key(50, 60, 300, 50, '2.Communication')
-        self.banglaKey = Key(50, 115, 300, 50, '3.Bangla Alphabets')
-        self.exitKey = Key(150, 5, 150, 50, '4.Exit')  # To add "3.Exit" button
+        self.vowelKey = Key(50, 5, 300, 50, '1.Bangla Vowels')
+        self.consonantKey = Key(50, 70, 300, 50, '2.Bangal Consonants')
+        self.backKey = Key(150, 5, 150, 50, '4.Back')  # To add "4.Back" button
 
         # getting frame's height and width
         self.frameHeight, self.frameWidth, _ = self.cam.read()[1].shape
-        self.calculationKey.x = int(self.frameWidth * .73) - 150
-        self.communicationKey.x = int(self.frameWidth * .73) - 150
-        self.banglaKey.x = int(self.frameWidth * .73) - 150
-        self.exitKey.x = int(self.frameWidth * 1.4) - 150  # To add "3.Exit" button
+        self.vowelKey.x = int(self.frameWidth * .73) - 150
+        self.consonantKey.x = int(self.frameWidth * .73) - 150
+        self.backKey.x = int(self.frameWidth * 1.4) - 150  # To add "4.Back" button
         # print(showKey.x)
 
-    def process_frame(self):
+    def bangla_al_frame(self):
         while True:
             success, img = self.cam.read()
 
@@ -48,11 +44,10 @@ class Main:
             imgRGB = cv2.cvtColor(imgg, cv2.COLOR_BGR2RGB)
             results = self.hands.process(imgRGB)
 
-            self.calculationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
-            self.communicationKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
-            self.banglaKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
-            # To add "3.Exit" button
-            self.exitKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
+            self.vowelKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
+            self.consonantKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
+            # To add "4.Back" button
+            self.backKey.drawKey(imgg, (255, 255, 255), (0, 0, 0), 0.1, fontScale=0.6)
 
             if results.multi_hand_landmarks:
                 for handLms in results.multi_hand_landmarks:
@@ -82,16 +77,13 @@ class Main:
                             for i in range(len(self.k)):
                                 if self.k[i] > 20:
                                     if i == 1:
-                                        calculator = cal.Calculator()
-                                        calculator.calculation_frame()
-                                    elif i == 2:
-                                        communicator = com.Communicator()
-                                        communicator.communication_frame()
+                                        vow = ban.bangla_vowel()
+                                        vow.vowel_frame()
+                                    #elif i == 2:
+                                        # code for bangal_consonants
                                     elif i == 3:
-                                        bangla = banal.bangla_al()
-                                        bangla.bangla_al_frame()
-                                    elif i == 4:
-                                        exit()
+                                        main = ma.Main()
+                                        main.process_frame()
                                     else:
                                         self.text += self.op[i]
                                         for i in range(len(self.k)):
@@ -103,8 +95,3 @@ class Main:
 
             cv2.imshow("WebCam", imgg)
             cv2.waitKey(1)
-
-
-if __name__ == "__main__":
-    main = Main()
-    main.process_frame()
