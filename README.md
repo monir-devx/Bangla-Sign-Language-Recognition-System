@@ -1,4 +1,4 @@
-# Bangla Sign Language Recognition
+# Bangla Sign Language Recognition System
 
 ## Project Overview
 This project aims to create a real-time recognition system for Bangla Sign Language (BSL) using hand gestures. The system employs MediaPipe Hands for detecting and tracking hand landmarks, OpenCV for processing the video feed and extracting features, and TensorFlow (with Keras) for classifying the gestures. This project not only recognizes individual Bangla alphabets and sentences but also interprets mathematical calculations using Bangla numbers, making it a versatile tool for communication assistance for people with hearing impairments.
@@ -28,3 +28,7 @@ To run the system, you need to install the following dependencies:
 
 ```bash
 pip install mediapipe opencv-python tensorflow numpy pillow cvzone
+
+## License Information
+
+All rights reserved. This repository and its contents are copyrighted by Monir Hossain. No part of this project may be copied, modified, or distributed without explicit permission from the copyright holder.
