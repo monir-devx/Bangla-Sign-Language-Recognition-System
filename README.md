@@ -28,6 +28,7 @@ To run the system, you need to install the following dependencies:
 
 ```bash
 pip install mediapipe opencv-python tensorflow numpy pillow cvzone
+```
 
 ## License Information
 
